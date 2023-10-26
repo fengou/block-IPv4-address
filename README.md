@@ -1,3 +1,4 @@
+### 1、copy the following shell script to your vps machine and running it
 #! /bin/bash
 
 Green="\033[32m"
@@ -139,3 +140,39 @@ case "$num" in
     esac
 }
 main
+
+### 2、for example
+root@mail:~# 
+root@mail:~# vi block-ips.sh 
+root@mail:~# 
+root@mail:~# chmod 700 block-ips.sh 
+root@mail:~# 
+root@mail:~# ./block-ips.sh 
+———————————————————————————————————————
+Linux VPS一键屏蔽除了你所设置国家外的所有IP访问
+1、封禁IPv4
+2、解封IPv4
+3、查看封禁列表
+———————————————————————————————————————
+请输入数字 [1-3]:1
+检测到ipset程序已经安装，跳过安装步骤！
+请输入需要封禁的国家代码，如cn(中国)，注意字母为小写！
+请输入国家代码:cn
+IPs data文件已存在！
+规则添加成功，即将开始封禁ip！
+所指定国家(cn)的ip封禁成功！
+root@mail:~# 
+root@mail:~# ./block-ips.sh 
+———————————————————————————————————————
+Linux VPS一键屏蔽除了你所设置国家外的所有IP访问
+1、封禁IPv4
+2、解封IPv4
+3、查看封禁列表
+———————————————————————————————————————
+请输入数字 [1-3]:3
+1        0     0 ACCEPT     udp  --  *      *       0.0.0.0/0            0.0.0.0/0            multiport sports 53,443 ! match-set cn src
+2        3   156 ACCEPT     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            multiport sports 80,443 ! match-set cn src
+3        0     0 DROP       icmp --  *      *       0.0.0.0/0            0.0.0.0/0            icmptype 8 ! match-set cn src
+4        0     0 DROP       udp  --  *      *       0.0.0.0/0            0.0.0.0/0            ! match-set cn src
+5        4   240 DROP       tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            ! match-set cn src
+root@mail:~# 
