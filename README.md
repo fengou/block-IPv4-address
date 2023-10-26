@@ -3,7 +3,7 @@
 Green="\033[32m"
 Font="\033[0m"
 
-#root权限
+#root权限检查
 root_need(){
     if [[ $EUID -ne 0 ]]; then
         echo "Error:This script must be run as root!" 1>&2
@@ -40,7 +40,7 @@ for i in $(cat /root/$GEOIP.zone ); do ipset -A $GEOIP $i; done
 #rm -f /root/$GEOIP.zone
 echo -e "${Green}规则添加成功，即将开始封禁ip！${Font}"
 
-#允许某些特定的源的IPv4地址访问此VPS,将它添加到ipset规则中
+#允许某些特定的IPv4地址访问此VPS,将它添加到ipset规则中
 ipset add "$GEOIP" 47.xx.xx.117
 ipset add "$GEOIP" 23.xx.xx.44
 
