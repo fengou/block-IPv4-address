@@ -31,7 +31,7 @@ else
     echo -e "${Green}下载失败，请检查你的输入！${Font}"
     echo -e "${Green}代码查看地址：http://www.ipdeny.com/ipblocks/data/countries/${Font}"
     exit 1
-    fi
+  fi
 fi
 
 #创建ipset规则
