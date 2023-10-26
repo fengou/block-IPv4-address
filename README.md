@@ -51,7 +51,7 @@ fi
 #ipset add "$GEOIP" 47.xx.xx.117
 #ipset add "$GEOIP" 23.xx.xx.44
 
-#开始封禁，除了你设置的国家能访问外，其它任何国家的IPv4地址只有当源端口是53,80,443能够访问VPS,其它tcp,udp,icmp全给它禁了
+#开始封禁，除了你设置的国家能访问外，其它任何国家的IPv4地址不能够访问VPS,其它tcp,udp,icmp全给它禁了
 iptables -I INPUT -p udp -m set ! --match-set "$GEOIP" src -j DROP
 iptables -I INPUT -p tcp -m set ! --match-set "$GEOIP" src -j DROP
 iptables -I INPUT -p icmp --icmp-type echo-request -m set ! --match-set "$GEOIP" src -j DROP
