@@ -49,7 +49,7 @@ iptables -I INPUT -p tcp -m set ! --match-set "$GEOIP" src -j DROP
 iptables -I INPUT -p udp -m set ! --match-set "$GEOIP" src -j DROP
 iptables -I INPUT -p icmp --icmp-type echo-request -m set ! --match-set "$GEOIP" src -j DROP
 iptables -I INPUT -p tcp -m multiport --sport 80,443 -m set ! --match-set "$GEOIP" src -j ACCEPT
-iptables -I INPUT -p udp --sport 53 -m set ! --match-set "$GEOIP" src -j ACCEPT
+iptables -I INPUT -p udp -m multiport --sport 53,443 -m set ! --match-set "$GEOIP" src -j ACCEPT
 echo -e "${Green}所指定国家($GEOIP)的ip封禁成功！${Font}"
 }
 
@@ -61,8 +61,8 @@ read -p "请输入国家代码:" GEOIP
 lookuplist=`ipset list | grep "Name:" | grep "$GEOIP"`
     if [ -n "$lookuplist" ]; then
 	iptables -D INPUT -p tcp -m multiport --sport 80,443 -m set ! --match-set "$GEOIP" src -j ACCEPT
-	iptables -D INPUT -p udp --sport 53 -m set ! --match-set "$GEOIP" src -j ACCEPT
-    iptables -D INPUT -p tcp -m set ! --match-set "$GEOIP" src -j DROP
+	iptables -D INPUT -p udp -m multiport --sport 53,443 -m set ! --match-set "$GEOIP" src -j ACCEPT
+        iptables -D INPUT -p tcp -m set ! --match-set "$GEOIP" src -j DROP
 	iptables -D INPUT -p udp -m set ! --match-set "$GEOIP" src -j DROP
 	iptables -D INPUT -p icmp --icmp-type echo-request -m set ! --match-set "$GEOIP" src -j DROP
 	ipset destroy $GEOIP
