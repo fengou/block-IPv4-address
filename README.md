@@ -57,6 +57,8 @@ iptables -I INPUT -p tcp -m set ! --match-set "$GEOIP" src -j DROP
 iptables -I INPUT -p icmp --icmp-type echo-request -m set ! --match-set "$GEOIP" src -j DROP
 iptables -I INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 iptables -I INPUT -i lo -j ACCEPT
+#如果安装了docker，默认禁用所有连接
+iptables -I DOCKER -p all -m set ! --match-set "$GEOIP" src -j DROP
 echo -e "${Green}除了放行国家($GEOIP)外其它IP封禁成功！${Font}"
 }
 
@@ -67,7 +69,8 @@ read -p "请输入国家代码:" GEOIP
 #判断是否有此国家的规则
 lookuplist=`ipset list | grep "Name:" | grep "$GEOIP"`
     if [ -n "$lookuplist" ]; then
-        iptables -D INPUT -i lo -j ACCEPT
+        iptables -D DOCKER -p all -m set ! --match-set "$GEOIP" src -j DROP
+	iptables -D INPUT -i lo -j ACCEPT
         iptables -D INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
         iptables -D INPUT -p icmp --icmp-type echo-request -m set ! --match-set "$GEOIP" src -j DROP
         iptables -D INPUT -p tcp -m set ! --match-set "$GEOIP" src -j DROP
